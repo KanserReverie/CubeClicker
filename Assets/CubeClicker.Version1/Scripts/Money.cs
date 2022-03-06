@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Money : MonoBehaviour
+namespace CubeClicker.Version1
 {
-    // Variables for constant money increase current money and pricing text
-    private int currentMoney;
-    private int constantMoneyIncrease;
-    public Text currentMoneyDisplay;
-    private string pricingText = "$$";
-    // Start is called before the first frame update
-    void Start()
+    public class Money : MonoBehaviour
     {
-        currentMoney = 0;
-        currentMoneyDisplay.text = pricingText + currentMoney.ToString("N0");
-    }
+        // Variables for constant money increase current money and pricing text
+        private int currentMoney;
+        private int constantMoneyIncrease;
+        public Text currentMoneyDisplay;
+        private string pricingText = "$$";
+        // Start is called before the first frame update
+        void Start()
+        {
+            currentMoney = 0;
+            currentMoneyDisplay.text = pricingText + currentMoney.ToString("N0");
+        }
 
-    public void boxBreak(int currencyGained)
-    {
-        currentMoney = currentMoney + currencyGained;
-        currentMoneyDisplay.text = pricingText + currentMoney.ToString("N0");
+        public void boxBreak(int currencyGained)
+        {
+            currentMoney = currentMoney + currencyGained;
+            currentMoneyDisplay.text = pricingText + currentMoney.ToString("N0");
         
+        }
     }
 }
