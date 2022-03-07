@@ -117,9 +117,8 @@ namespace CubeClicker.Version1
                 }
             }
         }
-
-
-        public void cubeClicked()
+        
+        public void CubeClicked()
         {
 
             // If row isn't active make it active
@@ -142,7 +141,7 @@ namespace CubeClicker.Version1
             {
                 Debug.Log("CUBE BREAK");
                 cubeCount = 0;
-                cubeBreak();
+                CubeBreak();
                 return;
             }
 
@@ -150,13 +149,14 @@ namespace CubeClicker.Version1
             // SEEMS LIKE THIS NEEDS TO BE DIFFERENT AS IT IS THE MAIN CODE RUN 90% OF THE TIME
             // Will run if Cube isn't at Max AND everything else has been checked
             cubeCount++;
-            cubeJump();
+            CubeJump();
             rend.material.color += cubeColourGap;
             // ________________________________________________________
 
         }
-
-        private void cubeJump()
+        
+    #region Cube Jump
+        private void CubeJump()
         {
             // If the cube is still add force to it.
             // If the cube is falling, inverse its velocity.
@@ -169,23 +169,21 @@ namespace CubeClicker.Version1
                rb.velocity = -rb.velocity;
             }
 
-            print("push forward" + "|| now z = " +transform.position.z + " original z = " + originalPosition.z);
-            if(transform.position.z >= originalPosition.z)
-            {
-                //print("push forward" + "|| now z = " +transform.position.z + " original z = " + originalPosition.z);
-                rb.AddTorque(transform.right * GetARandomClickTorqueForce(ForceType.Negative));
-            }
-            else
-            {
-                //print("push back" + "now z = " +transform.position.z + "original z = " + originalPosition.z);
-                rb.AddTorque(transform.right * GetARandomClickTorqueForce(ForceType.Positive));
-            }
             
-            //rb.AddTorque(transform.up * Random.Range(cubeHitTorqueMin, cubeHitTorqueMax) * (Random.Range(0, 2) * 2 - 1));
-            //rb.AddTorque(transform.forward * Random.Range(cubeHitTorqueMin, cubeHitTorqueMax) * (Random.Range(0, 2) * 2 - 1));
-                //rb.AddTorque(transform.right * 100);
-            //rb.AddTorque(transform.right * Random.Range(cubeHitTorqueMin, cubeHitTorqueMax) * (Random.Range(0, 2) * 2 - 1));
-            //rb.AddTorque(transform.forward * Random.Range(cubeHitTorqueMin, cubeHitTorqueMax) * (Random.Range(0, 2) * 2 - 1));
+            if(transform.position.z >= originalPosition.z) 
+                rb.AddTorque(transform.right * GetARandomClickTorqueForce(ForceType.Negative));
+            else
+                rb.AddTorque(transform.right * GetARandomClickTorqueForce(ForceType.Positive));
+            
+            if(transform.position.x >= originalPosition.x) 
+                rb.AddTorque(transform.forward * GetARandomClickTorqueForce(ForceType.Positive));
+            else
+                rb.AddTorque(transform.forward * GetARandomClickTorqueForce(ForceType.Negative));
+
+            if(transform.rotation.y <= 0) 
+                rb.AddTorque(transform.up * GetARandomClickTorqueForce(ForceType.Positive));
+            else
+                rb.AddTorque(transform.up * GetARandomClickTorqueForce(ForceType.Negative));
         }
 
         /// <summary>
@@ -199,14 +197,15 @@ namespace CubeClicker.Version1
             else
                 return (Random.Range(cubeHitTorqueMin, cubeHitTorqueMax) * -1);
         }
+    #endregion
 
-        private void cubeBreak()
+        private void CubeBreak()
         {
             // Get how much money will spawn from cube and thus its jump will be relative * if in the bottom 5% will actually give double max money and jump 3x as high
             int moneyGiven = Random.Range(coinMin, coinMax);
             float jumpHeight;
             jumpHeight = ((float)moneyGiven / coinAverage) + 1;
-
+            
             bool doubleCoinCheck = false;
             int x = Random.Range(0, 100);
             if ((x < coinMutiplierChance))
@@ -219,8 +218,12 @@ namespace CubeClicker.Version1
             rb.AddForce(0, cubeHitForceMax * jumpHeight, 0);
             // Resets Colour
             rend.material.color = cubeUntouchedColour;
+            
             // Clicks the next Cube
-            nextCube.cubeClicked();
+            nextCube.CubeClicked();
+            
+            if (cubeColumn == 4)
+                
             // ADD MONEY TO OUTSIDE
             print("money given = " + coinMin + " to " + coinMax);
             print("money given !box! = " + moneyGiven);
@@ -228,9 +231,7 @@ namespace CubeClicker.Version1
             // RUN MONEY SPRITE
             // RUN GLOW SPRITE
         }
-
-
-
+        
         public enum ForceType { Positive,Negative }
     }
 }

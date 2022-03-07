@@ -1520,7 +1520,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 730835422}
         m_TargetAssemblyTypeName: CubeCode, Assembly-CSharp
-        m_MethodName: cubeClicked
+        m_MethodName: CubeClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
